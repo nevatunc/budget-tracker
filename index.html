@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <h2>FinanceDash</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transactions</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Reports</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="page-title">
+                    <h1>Finance Dashboard</h1>
+                    <p>Track and analyze your financial status</p>
+                </div>
+                <div class="top-actions">
+                    <button class="btn-icon" id="addIncomeBtn">
+                        <i class="fas fa-plus"></i>
+                        Add Income
+                    </button>
+                    <button class="btn-icon" id="addExpenseBtn">
+                        <i class="fas fa-minus"></i>
+                        Add Expense
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card income">
+                    <div class="stat-header">
+                        <div class="stat-title">Total Income</div>
+                        <div class="stat-icon">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="totalIncome">$0.00</div>
+                    <div class="stat-change positive" id="incomeChange">+0% this month</div>
+                </div>
+
+                <div class="stat-card expense">
+                    <div class="stat-header">
+                        <div class="stat-title">Total Expenses</div>
+                        <div class="stat-icon">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="totalExpense">$0.00</div>
+                    <div class="stat-change negative" id="expenseChange">+0% this month</div>
+                </div>
+
+                <div class="stat-card savings">
+                    <div class="stat-header">
+                        <div class="stat-title">Net Savings</div>
+                        <div class="stat-icon">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="netSavings">$0.00</div>
+                    <div class="stat-change positive" id="savingsChange">Goal: $5,000</div>
+                </div>
+
+                <div class="stat-card average">
+                    <div class="stat-header">
+                        <div class="stat-title">Daily Average</div>
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="dailyAverage">$0.00</div>
+                    <div class="stat-change positive" id="averageChange">Last 30 days</div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Chart Widget -->
+                <div class="widget">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Monthly Trend</h3>
+                        <a href="#" class="widget-action">View Details</a>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Quick Actions & Recent Transactions -->
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <!-- Quick Actions -->
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3 class="widget-title">Quick Actions</h3>
+                        </div>
+                        <div class="quick-actions">
+                            <div class="quick-action" id="quickIncome">
+                                <div class="quick-action-icon">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div class="quick-action-text">
+                                    <div class="quick-action-title">Add Income</div>
+                                    <div class="quick-action-desc">Create new income record</div>
+                                </div>
+                            </div>
+                            <div class="quick-action" id="quickExpense">
+                                <div class="quick-action-icon">
+                                    <i class="fas fa-minus"></i>
+                                </div>
+                                <div class="quick-action-text">
+                                    <div class="quick-action-title">Add Expense</div>
+                                    <div class="quick-action-desc">Create new expense record</div>
+                                </div>
+                            </div>
+                            <div class="quick-action" id="exportData">
+                                <div class="quick-action-icon">
+                                    <i class="fas fa-download"></i>
+                                </div>
+                                <div class="quick-action-text">
+                                    <div class="quick-action-title">Export Data</div>
+                                    <div class="quick-action-desc">CSV/JSON format</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3 class="widget-title">Recent Transactions</h3>
+                            <a href="#" class="widget-action">View All</a>
+                        </div>
+                        <div class="transaction-list" id="recentTransactions">
+                            <div style="text-align: center; color: #64748b; padding: 2rem;">
+                                No transactions yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expense Categories Chart -->
+            <div class="widget">
+                <div class="widget-header">
+                    <h3 class="widget-title">Expense Categories</h3>
+                    <a href="#" class="widget-action">Analyze</a>
+                </div>
+                <div class="chart-container">
+                    <canvas id="expenseChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Income Modal -->
+    <div class="modal" id="incomeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add Income</h2>
+                <button class="close-btn" onclick="closeModal('incomeModal')">&times;</button>
+            </div>
+            <form id="incomeForm">
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-input" id="incomeDescription" placeholder="e.g. Salary, Freelance" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount ($)</label>
+                    <input type="number" class="form-input" id="incomeAmount" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-input" id="incomeCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="Salary">Salary</option>
+                        <option value="Freelance">Freelance</option>
+                        <option value="Investment">Investment</option>
+                        <option value="Bonus">Bonus</option>
+                        <option value="Rental Income">Rental Income</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" class="form-input" id="incomeDate" required>
+                </div>
+                <button type="submit" class="btn-primary">Add Income</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Expense Modal -->
+    <div class="modal" id="expenseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add Expense</h2>
+                <button class="close-btn" onclick="closeModal('expenseModal')">&times;</button>
+            </div>
+            <form id="expenseForm">
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-input" id="expenseDescription" placeholder="e.g. Groceries, Rent" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount ($)</label>
+                    <input type="number" class="form-input" id="expenseAmount" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-input" id="expenseCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="Food">Food</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Education">Education</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" class="form-input" id="expenseDate" required>
+                </div>
+                <button type="submit" class="btn-primary">Add Expense</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971c1e0d841cd100',t:'MTc1NTYzMjM3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
